@@ -8,7 +8,7 @@ Gem::Specification.new do |s|
   s.homepage = "http://github.com/rcrowley/clint.git"
   s.description = File.read(File.join(File.dirname(__FILE__), "README.md"))
   s.files = [
-    "lib/clint.rb"
+    "lib/clint.rb",
     "man/clint.7.gz",
   ]
 end
