@@ -125,11 +125,18 @@ class Clint
   # subcommand is sent to the instance with the remaining non-option
   # arguments.
   def subcommand(klass)
+
+    # Find the subcommand.
     if 1 > @args.length
       usage
       exit 1
     end
     subcommand = @args.shift.to_sym
+
+    # Give the caller the opportunity to declare more options.
+    yield subcommand if block_given?
+
+    # Execute the subcommand as a class method.
     if klass.singleton_methods(false).include? subcommand.to_s
       arity = klass.method(subcommand).arity
       if @args.length != arity && -@args.length - 1 != arity
@@ -143,6 +150,8 @@ class Clint
       end
       exit 0
     end
+
+    # Execute the subcommand as an instance method.
     if 1 > @args.length
       usage
       exit 1
@@ -161,6 +170,7 @@ class Clint
       end
       exit 0
     end
+
   end
 
 end

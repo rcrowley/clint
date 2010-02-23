@@ -1,7 +1,7 @@
 Gem::Specification.new do |s|
   s.name = "clint"
-  s.version = "0.1.0"
-  s.date = "2010-02-22"
+  s.version = "0.1.1"
+  s.date = "2010-02-23"
   s.authors = ["Richard Crowley"]
   s.email = "r@rcrowley.org"
   s.summary = "command line argument parser"
