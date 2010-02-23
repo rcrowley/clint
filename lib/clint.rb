@@ -94,7 +94,7 @@ class Clint
 
       # Handle boolean options.
       if [TrueClass, FalseClass].include? @options[option].class
-        if !value.nil?
+        unless value.nil?
           usage
           exit 1
         end
