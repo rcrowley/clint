@@ -33,6 +33,10 @@ Clint options are declared by passing hash arguments to `Clint#options`.  The ha
 
 Due to limitations in the Ruby 1.8 grammar, all methods that could act as subcommands must not declare default argument values except `options={}` if desired.
 
+## THEME SONG
+
+Leo Arnaud and John Williams - "Bugler's Dream"
+
 ## AUTHOR
 
 Richard Crowley <r@rcrowley.org>
