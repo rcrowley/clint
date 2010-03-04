@@ -139,24 +139,26 @@ class Clint
     # Execute the subcommand as a class method.
     if klass.singleton_methods(false).include? subcommand.to_s
       arity = klass.method(subcommand).arity
-      if @args.length != arity && -@args.length - 1 != arity
-        usage
-        exit 1
+      if @args.length == arity || -@args.length - 1 == arity
+        begin
+          klass.send subcommand, *(@args + [@options])
+        rescue ArgumentError
+          klass.send subcommand, *@args
+        end
+        exit 0
       end
-      begin
-        klass.send subcommand, *(@args + [@options])
-      rescue ArgumentError
-        klass.send subcommand, *@args
-      end
-      exit 0
     end
 
     # Execute the subcommand as an instance method.
-    if 1 > @args.length
+    arity = klass.allocate.method(:initialize).arity
+    if 0 > arity
+      arity = arity.abs - 1
+    end
+    if arity > @args.length
       usage
       exit 1
     end
-    instance = klass.new(@args.shift)
+    instance = klass.new(@args.slice!(0, arity))
     if instance.public_methods(false).include? subcommand.to_s
       arity = instance.method(subcommand).arity
       if @args.length != arity && -@args.length - 1 != arity
