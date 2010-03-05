@@ -173,6 +173,10 @@ class Clint
       exit 0
     end
 
+    # No suitable class or instance method was found.
+    usage
+    exit 1
+
   end
 
 end
