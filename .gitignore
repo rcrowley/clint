@@ -1,2 +1,4 @@
 autom4te.cache
 config.*
+configure
+Makefile
