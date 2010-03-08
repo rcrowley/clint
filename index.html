@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta http-equiv='content-type' value='text/html;charset=utf8'>
+  <meta name='generator' value='Ron/v0.3'>
+  <title>clint(7) -- Ruby command line argument parser</title>
+  <style type='text/css'>
+    body {margin:0}
+    #man, #man code, #man pre, #man tt, #man kbd, #man samp {
+      font-family:consolas,monospace;
+      font-size:16px;
+      line-height:1.3;
+      color:#343331;
+      background:#fff; }
+    #man { max-width:89ex; text-align:justify; margin:0 25px 25px 25px }
+    #man h1, #man h2, #man h3 { color:#232221;clear:left }
+    #man h1 { font-size:28px; margin:15px 0 30px 0; text-align:center }
+    #man h2 { font-size:18px; margin-bottom:0; margin-top:10px; line-height:1.3; }
+    #man h3 { font-size:16px; margin:0 0 0 4ex; }
+    #man p, #man ul, #man ol, #man dl, #man pre { margin:0 0 18px 0; }
+    #man pre {
+      color:#333231;
+      background:#edeceb;
+      padding:5px 7px;
+      margin:0px 0 20px 0;
+      border-left:2ex solid #ddd}
+    #man pre + h2, #man pre + h3 {
+      margin-top:22px;
+    }
+    #man h2 + pre, #man h3 + pre {
+      margin-top:5px;
+    }
+    #man > p, #man > ul, #man > ol, #man > dl, #man > pre { margin-left:8ex; }
+    #man dt { margin:0; clear:left }
+    #man dt.flush { float:left; width:8ex }
+    #man dd { margin:0 0 0 9ex }
+    #man code, #man strong, #man b { font-weight:bold; color:#131211; }
+    #man pre code { font-weight:normal; color:#232221; background:inherit }
+    #man em, var, u {
+      font-style:normal; color:#333231; border-bottom:1px solid #999; }
+    #man h1.man-title { display:none; }
+    #man ol.man, #man ol.man li { margin:2px 0 10px 0; padding:0;
+      float:left; width:33%; list-style-type:none;
+      text-transform:uppercase; font-size:18px; color:#999;
+      letter-spacing:1px;}
+    #man ol.man { width:100%; }
+    #man ol.man li.tl { text-align:left }
+    #man ol.man li.tc { text-align:center;letter-spacing:4px }
+    #man ol.man li.tr { text-align:right }
+    #man ol.man a { color:#999 }
+    #man ol.man a:hover { color:#333231 }
+  </style>
+</head>
+<body>
+<div id='man'>
+
+<h1 class='man-title'>clint(7)</h1>
+
+<ol class='head man'>
+  <li class='tl'>clint(7)</li>
+  <li class='tc'></li>
+  <li class='tr'>clint(7)</li>
+</ol>
+
+<h2 id='NAME'>NAME</h2>
+<p><code>clint</code> -- Ruby command line argument parser</p>
+<h2>SYNOPSIS</h2>
+
+<pre><code>require 'clint'
+c = Clint.new
+c.usage do
+  $stderr.puts "Usage: #{File.basename(__FILE__)} [-h|--help]"
+end
+c.help do
+  $stderr.puts "  -h, --help\tshow this help message"
+end
+c.options :help =&gt; false, :h =&gt; :help
+c.parse ARGV
+if c.options[:help]
+  c.help
+  exit 1
+end
+c.subcommand Klass
+</code></pre>
+
+<h2>DESCRIPTION</h2>
+
+<p>Clint is an alternative Ruby command line argument parser that's very good for programs using the subcommand pattern familiar from <code>git</code>(1), <code>svn</code>(1), <code>apt-get</code>(8), and many others.  In addition, it separates option declarations from usage and help messages becuase the author feels like that's a better idea.</p>
+
+<p>Clint options are declared by passing hash arguments to <code>Clint#options</code>.  The hash keys should be <code>Symbol</code>s.  If the value is also a <code>Symbol</code>, an alias is defined from the key to the value.  If the value is a <code>Class</code>, Clint attempts to find a default value for that class.  Otherwise, the value is treated as the default and the value's class will be used to construct type-accurate values from command line arguments.</p>
+
+<p><code>Clint#options</code> may be called repeatedly to declare extra options and aliases.  <code>Clint#reset</code> can be used at any time to clear all declared options and aliases.</p>
+
+<p><code>Clint#parse</code> may likewise be called repeatedly.  At the end of each invocation, it stores the remaining non-option arguments, meaning that arguments (for example, <code>ARGV</code>) must only be passed as a parameter to the first invocation.</p>
+
+<p><code>Clint#subcommand</code> may be called after <code>Clint#parse</code> to automatically handle the subcommand pattern as follows.  The first non-option argument is taken to be the subcommand, which must exist as a singleton or instance method of the class object passed to <code>Clint#subcommand</code>.  If a suitable class method is found, it is called with all remaining arguments, including a hash of the parsed options if we can get away with it.  Otherwise, an instance is constructed with the next non-option argument and the instance method is called with all remaining arguments, again including a hash of the parsed options if we can get away with it.</p>
+
+<p>Due to limitations in the Ruby 1.8 grammar, all methods that could act as subcommands must not declare default argument values except <code>options={}</code> if desired.</p>
+
+<h2>THEME SONG</h2>
+
+<p>Leo Arnaud and John Williams - "Bugler's Dream"</p>
+
+<h2>AUTHOR</h2>
+
+<p>Richard Crowley <a href="mailto:r@rcrowley.org">r@rcrowley.org</a></p>
+
+<h2>SEE ALSO</h2>
+
+<p>The standard Ruby <code>OptionParser</code> class <a href="http://ruby-doc.org/stdlib/libdoc/optparse/rdoc/classes/OptionParser.html">http://ruby-doc.org/stdlib/libdoc/optparse/rdoc/classes/OptionParser.html</a>.</p>
+
+<ol class='foot man'>
+  <li class='tl'></li>
+  <li class='tc'>March 2010</li>
+  <li class='tr'>clint(7)</li>
+</ol>
+
+</div>
+</body>
+</html>
