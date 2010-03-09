@@ -158,7 +158,7 @@ class Clint
       usage
       exit 1
     end
-    instance = klass.new(@args.slice!(0, arity))
+    instance = klass.new(*@args.slice!(0, arity))
     if instance.public_methods(false).include? subcommand.to_s
       arity = instance.method(subcommand).arity
       if @args.length != arity && -@args.length - 1 != arity
