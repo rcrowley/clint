@@ -5,7 +5,7 @@ AC_PREREQ([2.64])
 AC_INIT([manskeleton], [0.0.0], [])
  
 # Checks for programs.
-AC_PATH_PROG([ron], [ron], [], [$PATH:/var/lib/gems/1.8/bin])
+AC_PATH_PROG([ronn], [ronn], [], [$PATH:/var/lib/gems/1.8/bin])
 AC_PATH_PROG([gzip], [gzip], [], [$PATH])
  
 # Checks for libraries.
