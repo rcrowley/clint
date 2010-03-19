@@ -1,0 +1,9 @@
+Package: clint
+Version: 0.1.5-1
+Section: devel
+Priority: optional
+Essential: no
+Architecture: all
+Depends: ruby1.8 | ruby1.9
+Maintainer: Richard Crowley <r@rcrowley.org>
+Description: Ruby command line argument parser
