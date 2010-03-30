@@ -131,14 +131,12 @@ class Clint
     elsif -@args.length - 1 == arity
       callable.call *(@args + [@options])
     else
-      begin
-        dispatch callable.new
-        exit 0
-      rescue NameError, ArgumentError
-      end
-      usage
-      exit 1
+      dispatch callable.new
+      exit 0
     end
+  rescue Exception
+    usage
+    exit 1
   end
 
   # Treat the first non-option argument as a subcommand in the given class.
