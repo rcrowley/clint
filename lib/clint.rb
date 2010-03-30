@@ -2,7 +2,7 @@ class Clint
 
   def initialize(options={})
     reset
-    @strict = !options[:strict].nil?
+    @strict = !!options[:strict]
   end
 
   def usage
@@ -116,6 +116,26 @@ class Clint
       end
     end
     @args = args
+  end
+
+  # Pass options and arguments however possible to the given callable, which
+  # could be a Proc or just an object that responds to the method call.
+  def dispatch(callable)
+    arity = begin
+      callable.arity
+    rescue NoMethodError
+      callable.method(:call).arity
+    end
+    if @args.length != arity && -@args.length - 1 != arity
+      usage
+      exit 1
+    end
+    begin
+      callable.call *(@args + [@options])
+    rescue ArgumentError
+      callable.call *@args
+    end
+    exit 0
   end
 
   # Treat the first non-option argument as a subcommand in the given class.
