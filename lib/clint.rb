@@ -126,16 +126,19 @@ class Clint
     rescue NoMethodError
       callable.method(:call).arity
     end
-    if @args.length != arity && -@args.length - 1 != arity
+    if @args.length == arity
+      callable.call *@args
+    elsif -@args.length - 1 == arity
+      callable.call *(@args + [@options])
+    else
+      begin
+        dispatch callable.new
+        exit 0
+      rescue NameError, ArgumentError
+      end
       usage
       exit 1
     end
-    begin
-      callable.call *(@args + [@options])
-    rescue ArgumentError
-      callable.call *@args
-    end
-    exit 0
   end
 
   # Treat the first non-option argument as a subcommand in the given class.
