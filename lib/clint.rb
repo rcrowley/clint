@@ -127,9 +127,9 @@ class Clint
       callable.method(:call).arity
     end
     if @args.length == arity
-      callable.call *@args
+      callable.call(*@args)
     elsif -@args.length - 1 == arity
-      callable.call *(@args + [@options])
+      callable.call(*(@args + [@options]))
     else
       dispatch callable.new
       exit 0
