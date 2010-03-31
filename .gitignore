@@ -1,4 +1,5 @@
+*.swp
+autoscan.log
 autom4te.cache
 config.*
-configure
 Makefile

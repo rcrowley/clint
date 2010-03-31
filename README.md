@@ -17,6 +17,7 @@ clint(7) -- Ruby command line argument parser
 	  c.help
 	  exit 1
 	end
+	c.dispatch Callable
 	c.subcommand Klass
 
 ## DESCRIPTION
@@ -28,6 +29,8 @@ Clint options are declared by passing hash arguments to `Clint#options`.  The ha
 `Clint#options` may be called repeatedly to declare extra options and aliases.  `Clint#reset` can be used at any time to clear all declared options and aliases.
 
 `Clint#parse` may likewise be called repeatedly.  At the end of each invocation, it stores the remaining non-option arguments, meaning that arguments (for example, `ARGV`) must only be passed as a parameter to the first invocation.
+
+`Clint#dispatch` may be called after `Clint#parse` with a callable that will receive the arguments and options.  If there is a mismatch in the arity of the callable's `#call` method, the callable's constructor is called with no arguments and the resulting object is treated as the callable that receives the arguments and options.
 
 `Clint#subcommand` may be called after `Clint#parse` to automatically handle the subcommand pattern as follows.  The first non-option argument is taken to be the subcommand, which must exist as a singleton or instance method of the class object passed to `Clint#subcommand`.  If a suitable class method is found, it is called with all remaining arguments, including a hash of the parsed options if we can get away with it.  Otherwise, an instance is constructed with the next non-option argument and the instance method is called with all remaining arguments, again including a hash of the parsed options if we can get away with it.
 

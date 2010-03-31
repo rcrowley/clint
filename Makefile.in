@@ -1,0 +1,38 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=@libdir@
+datarootdir=@datarootdir@
+mandir=@mandir@
+INSTALL=@INSTALL@
+
+VERSION=$(shell grep Version control | awk '{print $$2}')
+LIBDIR=$(shell test -d $(libdir)/site_ruby && echo $(libdir)/site_ruby || echo $(libdir)/ruby/vendor_ruby)
+
+all:
+	@true
+
+install:
+	$(INSTALL) -d $(DESTDIR)$(LIBDIR)
+	$(INSTALL) lib/*.rb $(DESTDIR)$(LIBDIR)/
+	$(INSTALL) -d $(DESTDIR)$(mandir)/man7
+	$(INSTALL) man/man7/clint.7.gz $(DESTDIR)$(mandir)/man7/
+
+uninstall:
+	rm -f $(DESTDIR)$(LIBDIR)/clint.rb $(DESTDIR)$(mandir)/man7/clint.7.gz
+
+man:
+	@make -C man
+
+deb:
+ifeq (root, $(shell whoami))
+	debra create debian control
+	git archive --prefix=debian/ HEAD | gzip >debian.tar.gz
+	debra sourceinstall debian debian.tar.gz -p /usr/local
+	rm debian.tar.gz
+	debra build debian clint_$(VERSION)_all.deb
+	debra destroy debian
+else
+	@echo "You must be root to build a Debian package."
+endif
+
+.PHONY: all install uninstall man deb
