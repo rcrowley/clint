@@ -2,7 +2,7 @@
 <html>
 <head>
   <meta http-equiv='content-type' value='text/html;charset=utf8'>
-  <meta name='generator' value='Ron/v0.3'>
+  <meta name='generator' value='Ronn/v0.4.1'>
   <title>clint(7) -- Ruby command line argument parser</title>
   <style type='text/css'>
     body {margin:0}
@@ -64,6 +64,7 @@
 
 <h2 id='NAME'>NAME</h2>
 <p><code>clint</code> -- Ruby command line argument parser</p>
+
 <h2>SYNOPSIS</h2>
 
 <pre><code>require 'clint'
@@ -80,6 +81,7 @@ if c.options[:help]
   c.help
   exit 1
 end
+c.dispatch Callable
 c.subcommand Klass
 </code></pre>
 
@@ -93,6 +95,8 @@ c.subcommand Klass
 
 <p><code>Clint#parse</code> may likewise be called repeatedly.  At the end of each invocation, it stores the remaining non-option arguments, meaning that arguments (for example, <code>ARGV</code>) must only be passed as a parameter to the first invocation.</p>
 
+<p><code>Clint#dispatch</code> may be called after <code>Clint#parse</code> with a callable that will receive the arguments and options.  If there is a mismatch in the arity of the callable's <code>#call</code> method, the callable's constructor is called with no arguments and the resulting object is treated as the callable that receives the arguments and options.</p>
+
 <p><code>Clint#subcommand</code> may be called after <code>Clint#parse</code> to automatically handle the subcommand pattern as follows.  The first non-option argument is taken to be the subcommand, which must exist as a singleton or instance method of the class object passed to <code>Clint#subcommand</code>.  If a suitable class method is found, it is called with all remaining arguments, including a hash of the parsed options if we can get away with it.  Otherwise, an instance is constructed with the next non-option argument and the instance method is called with all remaining arguments, again including a hash of the parsed options if we can get away with it.</p>
 
 <p>Due to limitations in the Ruby 1.8 grammar, all methods that could act as subcommands must not declare default argument values except <code>options={}</code> if desired.</p>
@@ -103,11 +107,12 @@ c.subcommand Klass
 
 <h2>AUTHOR</h2>
 
-<p>Richard Crowley <a href="mailto:r@rcrowley.org">r@rcrowley.org</a></p>
+<p>Richard Crowley <a href="&#109;&#97;&#x69;&#x6c;&#x74;&#111;&#58;&#114;&#64;&#x72;&#x63;&#x72;&#x6f;&#x77;&#x6c;&#x65;&#121;&#x2e;&#x6f;&#114;&#x67;">&#x72;&#x40;&#114;&#99;&#x72;&#111;&#x77;&#108;&#x65;&#x79;&#46;&#x6f;&#x72;&#x67;</a></p>
 
 <h2>SEE ALSO</h2>
 
 <p>The standard Ruby <code>OptionParser</code> class <a href="http://ruby-doc.org/stdlib/libdoc/optparse/rdoc/classes/OptionParser.html">http://ruby-doc.org/stdlib/libdoc/optparse/rdoc/classes/OptionParser.html</a>.</p>
+
 
 <ol class='foot man'>
   <li class='tl'></li>
