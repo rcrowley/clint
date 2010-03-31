@@ -13,9 +13,9 @@ all:
 
 install:
 	$(INSTALL) -d $(DESTDIR)$(LIBDIR)
-	$(INSTALL) lib/*.rb $(DESTDIR)$(LIBDIR)/
+	$(INSTALL) -m644 lib/*.rb $(DESTDIR)$(LIBDIR)/
 	$(INSTALL) -d $(DESTDIR)$(mandir)/man7
-	$(INSTALL) man/man7/clint.7.gz $(DESTDIR)$(mandir)/man7/
+	$(INSTALL) -m644 man/man7/clint.7.gz $(DESTDIR)$(mandir)/man7/
 
 uninstall:
 	rm -f $(DESTDIR)$(LIBDIR)/clint.rb $(DESTDIR)$(mandir)/man7/clint.7.gz
