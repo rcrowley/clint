@@ -134,7 +134,8 @@ class Clint
       dispatch callable.new
       exit 0
     end
-  rescue Exception
+  rescue Exception => e
+    raise e if SystemExit == e.class
     usage
     exit 1
   end
