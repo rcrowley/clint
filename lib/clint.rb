@@ -181,7 +181,7 @@ class Clint
       exit 1
     end
     instance = klass.new(*@args.slice!(0, arity))
-    if instance.public_methods(false).include? subcommand.to_s
+    if instance.public_methods(false).any? {|m| m == subcommand || m == subcommand.to_s }
       arity = instance.method(subcommand).arity
       if @args.length != arity && -@args.length - 1 != arity
         usage
