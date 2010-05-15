@@ -135,7 +135,7 @@ class Clint
       exit 0
     end
   rescue Exception => e
-    raise e if SystemExit == e.class
+    raise e if SystemExit == e.class || SignalException == e.class
     usage
     exit 1
   end
