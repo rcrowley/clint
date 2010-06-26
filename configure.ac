@@ -2,7 +2,7 @@
 # Process this file with autoconf to produce a configure script.
 
 AC_PREREQ([2.64])
-AC_INIT([clint], [0.2.4], [r@rcrowley.org])
+AC_INIT([clint], [0.2.7], [r@rcrowley.org])
 
 # Checks for programs.
 AC_PROG_INSTALL
