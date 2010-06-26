@@ -68,16 +68,21 @@ class Clint
     while args.length > i do
 
       # Skip anything not structured like an option.
-      case args[i]
-      when /^-([^-=\s])$/
+      option, value = case args[i]
+      when /^-([^-=\s]+)$/
+        args.delete_at i
+        $1.reverse.each_char { |c| args.insert i, "-#{c}" }
+        [$1[0, 1].to_sym, nil]
       when /^-([^-=\s])\s*(.+)$/
+        [$1.to_sym, $2]
       when /^--([^=\s]+)$/
+        [$1.to_sym, nil]
       when /^--([^=\s]+)(?:=|\s+)(.+)?$/
+        [$1.to_sym, $2]
       else
         i += 1
         next
       end
-      option, value = $1.to_sym, $2
 
       # Follow aliases through to a real option.
       option = @aliases[option] while @aliases[option]
