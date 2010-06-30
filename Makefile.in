@@ -46,7 +46,7 @@ deb:
 ifeq (root, $(shell whoami))
 	$(DEBRA) create debian control
 	$(GIT) archive --prefix=debian/ HEAD | $(GZIP) >debian.tar.gz
-	$(DEBRA) sourceinstall debian debian.tar.gz -p $(prefix)
+	$(DEBRA) sourceinstall debian debian.tar.gz -p /usr
 	rm debian.tar.gz
 	chown -R root:root debian
 	$(DEBRA) build debian clint_$(VERSION)_all.deb
